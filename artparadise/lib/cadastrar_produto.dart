@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
-import 'package:artparadise/app_data.dart' as appData;
+import 'package:artparadise/app_data.dart' as app_data;
 
 class Product {
   String name;

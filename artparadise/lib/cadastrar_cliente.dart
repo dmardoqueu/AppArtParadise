@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'cliente.dart';
+import 'app_data.dart' as app_data;
 
 class ClientRegistrationScreen extends StatefulWidget {
   const ClientRegistrationScreen({super.key});
@@ -6,6 +8,8 @@ class ClientRegistrationScreen extends StatefulWidget {
   _ClientRegistrationScreenState createState() =>
       _ClientRegistrationScreenState();
 }
+
+List<Client> clients = [];
 
 class _ClientRegistrationScreenState extends State<ClientRegistrationScreen> {
   final TextEditingController nameController = TextEditingController();
@@ -97,14 +101,23 @@ class _ClientRegistrationScreenState extends State<ClientRegistrationScreen> {
                   ),
                 ),
                 onPressed: () {
-                  // Lógica de cadastro de cliente aqui
                   final String name = nameController.text;
                   final String city = cityController.text;
                   final String neighborhood = neighborhoodController.text;
                   final String address = addressController.text;
                   final String phone = phoneController.text;
 
-                  // Você pode salvar os dados do cliente ou realizar outra ação necessária aqui.
+                  // Crie um novo cliente com as informações preenchidas
+                  final Client newClient = Client(
+                    name: name,
+                    city: city,
+                    neighborhood: neighborhood,
+                    address: address,
+                    phone: phone,
+                  );
+
+                  // Adicione o novo cliente à lista de clientes
+                  app_data.clients.add(newClient);
 
                   // Limpe os campos após o cadastro
                   nameController.clear();

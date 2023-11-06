@@ -1,6 +1,9 @@
-import 'package:artparadise/cadastrar_cliente.dart';
+import 'package:artparadise/cadastrar_cliente.dart' as client_registration;
 import 'package:artparadise/cadastrar_produto.dart';
+import 'package:artparadise/carrinho.dart';
 import 'package:artparadise/gerenciar_pedidos.dart';
+import 'package:artparadise/item_model.dart';
+import 'package:artparadise/resumo_semanal.dart'; // Importe a tela de resumo semanal
 import 'package:flutter/material.dart';
 import 'package:artparadise/app_data.dart' as app_data;
 import 'item_tile.dart';
@@ -31,18 +34,35 @@ class MyHomePage extends StatelessWidget {
           style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
-        leading: Builder(
-          builder: (context) => IconButton(
-            icon: const Icon(Icons.menu),
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(
+              Icons.shopping_cart,
+              color: Colors.white,
+            ), // Ícone de carrinho
             onPressed: () {
-              Scaffold.of(context).openDrawer(); // Abre o Drawer
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => ShoppingCartScreen(
+                    clients: app_data.clients, // Lista de clientes
+                    products: [], // Lista de produtos
+                    onPlaceOrder:
+                        (cartItems, selectedClient, selectedDeliveryDate) {
+                      // Lógica para realizar o pedido aqui
+                      // Você pode usar cartItems, selectedClient e selectedDeliveryDate
+                    },
+                  ),
+                ),
+              );
             },
           ),
-        ),
+        ],
         backgroundColor: Colors.black,
       ),
-      drawer: MyDrawer(), // Adicione o Drawer aqui.
-      body: MyScrollableContent(),
+      drawer: MyDrawer(),
+      body: MyScrollableContent(
+        addToCart: (item, quantity) {},
+      ),
     );
   }
 }
@@ -73,7 +93,8 @@ class MyDrawer extends StatelessWidget {
             onTap: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => ClientRegistrationScreen(),
+                  builder: (context) =>
+                      client_registration.ClientRegistrationScreen(),
                 ),
               ); // Fecha o Drawer
               // Adicione ação para as configurações aqui.
@@ -99,8 +120,13 @@ class MyDrawer extends StatelessWidget {
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
             ),
             onTap: () {
-              Navigator.pop(context); // Fecha o Drawer
-              // Adicione ação para sair aqui.
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => WeeklySummaryScreen(
+                    orders: [],
+                  ),
+                ),
+              );
             },
           ),
         ],
@@ -110,6 +136,10 @@ class MyDrawer extends StatelessWidget {
 }
 
 class MyScrollableContent extends StatelessWidget {
+  final Function(ItemModel, int) addToCart;
+
+  MyScrollableContent({Key? key, required this.addToCart}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -134,6 +164,7 @@ class MyScrollableContent extends StatelessWidget {
                 itemBuilder: (_, index) {
                   return ItemTile(
                     item: app_data.items[index],
+                    addToCart: addToCart, // Passar a função addToCart
                   );
                 },
               ),

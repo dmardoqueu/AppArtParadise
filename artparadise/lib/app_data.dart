@@ -1,4 +1,5 @@
 import 'package:artparadise/item_model.dart';
+import 'cliente.dart';
 
 ItemModel caneca = ItemModel(
   itemName: 'Caneca Tradicional',
@@ -112,6 +113,34 @@ ItemModel squeeze_aluminio = ItemModel(
   price: 35.0,
 );
 
+Client diogo = Client(
+    name: "Diôgo",
+    city: "Guarabira",
+    neighborhood: "Rua honorato araújo filho",
+    address: "nordeste 2",
+    phone: "83999713261");
+
+Client david = Client(
+    name: "David Bezerra",
+    city: "Guarabira",
+    neighborhood: "Rua honorato araújo filho",
+    address: "nordeste 2",
+    phone: "8399982455");
+
+Client marinez = Client(
+    name: "Marinez Bezerra",
+    city: "Guarabira",
+    neighborhood: "Rua Amália coelho",
+    address: "centro",
+    phone: "83988537759");
+
+Client adriano = Client(
+    name: "Adriano",
+    city: "Guarabira",
+    neighborhood: "Avenida Dom Pedro II",
+    address: "centro",
+    phone: "83988325468");
+
 List<ItemModel> items = [
   caneca,
   longDrink,
@@ -130,6 +159,14 @@ List<ItemModel> items = [
   tacaGinDegrade,
   squeeze_aluminio
 ];
+
+List<Client> clients = [
+  adriano,
+  david,
+  diogo,
+  marinez,
+];
+
 
 
 // List<CartItemModel> cartItems = [

@@ -4,12 +4,13 @@ import 'package:artparadise/utils_services.dart';
 
 class ItemTile extends StatelessWidget {
   final ItemModel item;
+  final Function(ItemModel, int) addToCart;
 
-  ItemTile({Key? key, required this.item}) : super(key: key);
+  ItemTile({Key? key, required this.item, required this.addToCart})
+      : super(key: key);
 
   final UtilsServices utilServices = UtilsServices();
 
-//MODAL DE ADICIONAR AO CARRINHO
   void _showQuantityDialog(BuildContext context) {
     int quantity = 1;
 
@@ -55,8 +56,8 @@ class ItemTile extends StatelessWidget {
               actions: <Widget>[
                 ElevatedButton(
                   onPressed: () {
-                    // Realize a ação com a quantidade selecionada, por exemplo, salvar em algum lugar.
-                    print("Quantidade selecionada: $quantity");
+                    // Adicione o item ao carrinho com a quantidade selecionada
+                    addToCart(item, quantity);
                     Navigator.of(context).pop();
                   },
                   child: const Text("OK"),
@@ -131,7 +132,7 @@ class ItemTile extends StatelessWidget {
           ),
         ),
 
-// ADICIONAR AO CARRINHO
+        // ADICIONAR AO CARRINHO
         Positioned(
           top: 4,
           right: 4,

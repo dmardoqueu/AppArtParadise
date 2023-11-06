@@ -8,13 +8,13 @@ class Order {
   String clientName;
   String productName;
   double amount;
-  bool isEdited;
+  DateTime date;
 
   Order({
     required this.clientName,
     required this.productName,
     required this.amount,
-    this.isEdited = false,
+    required this.date,
   });
 }
 
@@ -24,13 +24,30 @@ class OrderManagementScreen extends StatefulWidget {
 }
 
 class _OrderManagementScreenState extends State<OrderManagementScreen> {
-  List<Order> orders = []; // Lista de pedidos
+  List<Order> orders = [
+    Order(
+        clientName: "Cliente 1",
+        productName: "Produto A",
+        amount: 3,
+        date: DateTime.now().subtract(Duration(days: 2))),
+    Order(
+        clientName: "Cliente 2",
+        productName: "Produto B",
+        amount: 2,
+        date: DateTime.now().subtract(Duration(days: 3))),
+    Order(
+        clientName: "Cliente 3",
+        productName: "Produto C",
+        amount: 5,
+        date: DateTime.now().subtract(Duration(days: 7))),
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text("Gerenciar Pedidos"),
+        backgroundColor: Colors.black, // Define a cor da AppBar como preta
       ),
       body: ListView.builder(
         itemCount: orders.length,
@@ -41,93 +58,42 @@ class _OrderManagementScreenState extends State<OrderManagementScreen> {
             subtitle: Text(
                 "Produto: ${order.productName}\nQuantidade: ${order.amount.toString()}"),
             trailing: IconButton(
-              icon: Icon(order.isEdited ? Icons.check : Icons.edit),
+              icon: Icon(Icons.delete),
               onPressed: () {
-                // Lógica de edição do pedido aqui
-                if (!order.isEdited) {
-                  // Se não estiver em modo de edição, você pode implementar a edição do pedido.
-                  // Por exemplo, abrir uma tela de edição.
-                } else {
-                  // Se já estiver em modo de edição, você pode salvar as alterações.
-                  // Por exemplo, atualizar os dados do pedido na lista de pedidos.
-                  // Aqui, simplesmente vou alternar o estado de "isEdited".
-                  setState(() {
-                    order.isEdited = false;
-                  });
-                }
+                // Exibir um modal de confirmação antes de excluir o pedido
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      title: Text("Confirmação"),
+                      content: Text("Deseja realmente excluir este pedido?"),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context)
+                                .pop(); // Fechar o modal de confirmação
+                          },
+                          child: Text("Cancelar"),
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            // Lógica de exclusão do pedido aqui
+                            setState(() {
+                              orders.removeAt(index);
+                            });
+                            Navigator.of(context)
+                                .pop(); // Fechar o modal de confirmação
+                          },
+                          child: Text("Excluir"),
+                        ),
+                      ],
+                    );
+                  },
+                );
               },
             ),
           );
         },
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // Adicionar um novo pedido
-          showDialog(
-            context: context,
-            builder: (context) {
-              final TextEditingController clientNameController =
-                  TextEditingController();
-              final TextEditingController productNameController =
-                  TextEditingController();
-              final TextEditingController amountController =
-                  TextEditingController();
-
-              return AlertDialog(
-                title: Text("Novo Pedido"),
-                content: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    TextField(
-                      controller: clientNameController,
-                      decoration: InputDecoration(labelText: "Nome do Cliente"),
-                    ),
-                    TextField(
-                      controller: productNameController,
-                      decoration: InputDecoration(labelText: "Nome do Produto"),
-                    ),
-                    TextField(
-                      controller: amountController,
-                      decoration: InputDecoration(labelText: "Quantidade"),
-                      keyboardType: TextInputType.number,
-                    ),
-                  ],
-                ),
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: Text("Cancelar"),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      final clientName = clientNameController.text;
-                      final productName = productNameController.text;
-                      final amount =
-                          double.tryParse(amountController.text) ?? 0.0;
-
-                      if (clientName.isNotEmpty &&
-                          productName.isNotEmpty &&
-                          amount > 0) {
-                        // Adicionar o novo pedido à lista de pedidos
-                        setState(() {
-                          orders.add(Order(
-                              clientName: clientName,
-                              productName: productName,
-                              amount: amount));
-                        });
-                        Navigator.of(context).pop();
-                      }
-                    },
-                    child: Text("Adicionar"),
-                  ),
-                ],
-              );
-            },
-          );
-        },
-        child: Icon(Icons.add),
       ),
     );
   }
