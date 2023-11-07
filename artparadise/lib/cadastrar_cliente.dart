@@ -21,10 +21,10 @@ class _ClientRegistrationScreenState extends State<ClientRegistrationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: const Color.fromARGB(255, 109, 109, 109),
       appBar: AppBar(
         title: const Text("Cadastro de Cliente"),
-        backgroundColor: const Color.fromARGB(255, 109, 109, 109),
+        backgroundColor: Colors.black,
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(10.0),
@@ -91,56 +91,60 @@ class _ClientRegistrationScreenState extends State<ClientRegistrationScreen> {
               ),
             ),
             const SizedBox(height: 20),
-            SizedBox(
-              width: 200,
-              height: 50,
-              child: ElevatedButton(
-                style: ButtonStyle(
-                  backgroundColor: MaterialStatePropertyAll(
-                    Colors.red.shade900,
-                  ),
-                ),
-                onPressed: () {
-                  final String name = nameController.text;
-                  final String city = cityController.text;
-                  final String neighborhood = neighborhoodController.text;
-                  final String address = addressController.text;
-                  final String phone = phoneController.text;
-
-                  // Crie um novo cliente com as informações preenchidas
-                  final Client newClient = Client(
-                    name: name,
-                    city: city,
-                    neighborhood: neighborhood,
-                    address: address,
-                    phone: phone,
-                  );
-
-                  // Adicione o novo cliente à lista de clientes
-                  app_data.clients.add(newClient);
-
-                  // Limpe os campos após o cadastro
-                  nameController.clear();
-                  cityController.clear();
-                  neighborhoodController.clear();
-                  addressController.clear();
-                  phoneController.clear();
-
-                  // Exiba uma mensagem de sucesso, por exemplo.
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text("Cliente cadastrado com sucesso!"),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                SizedBox(
+                  height: 50,
+                  child: ElevatedButton(
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStatePropertyAll(
+                        Colors.red.shade900,
+                      ),
                     ),
-                  );
-                },
-                child: const Text(
-                  "Cadastrar",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
+                    onPressed: () {
+                      final String name = nameController.text;
+                      final String city = cityController.text;
+                      final String neighborhood = neighborhoodController.text;
+                      final String address = addressController.text;
+                      final String phone = phoneController.text;
+
+                      // Crie um novo cliente com as informações preenchidas
+                      final Client newClient = Client(
+                        name: name,
+                        city: city,
+                        neighborhood: neighborhood,
+                        address: address,
+                        phone: phone,
+                      );
+
+                      // Adicione o novo cliente à lista de clientes
+                      app_data.clients.add(newClient);
+
+                      // Limpe os campos após o cadastro
+                      nameController.clear();
+                      cityController.clear();
+                      neighborhoodController.clear();
+                      addressController.clear();
+                      phoneController.clear();
+
+                      // Exiba uma mensagem de sucesso, por exemplo.
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text("Cliente cadastrado com sucesso!"),
+                        ),
+                      );
+                    },
+                    child: const Text(
+                      "Cadastrar",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                      ),
+                    ),
                   ),
                 ),
-              ),
+              ],
             ),
           ],
         ),

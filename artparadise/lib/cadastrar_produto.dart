@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:artparadise/app_data.dart' as app_data;
+import 'package:artparadise/item_model.dart'; // Certifique-se de importar o modelo ItemModel.
 
 class Product {
   String name;
-  XFile? image; // Alteração: XFile para armazenar a imagem.
+  XFile? image;
   double value;
   String unit;
 
@@ -18,6 +19,12 @@ class Product {
 }
 
 class ProductRegistrationScreen extends StatefulWidget {
+  final List<ItemModel> itemList; // Receba a lista itemList como argumento.
+
+  final Function() updateGrid; // Função para atualizar o grid
+
+  ProductRegistrationScreen({required this.itemList, required this.updateGrid});
+
   @override
   _ProductRegistrationScreenState createState() =>
       _ProductRegistrationScreenState();
@@ -25,7 +32,7 @@ class ProductRegistrationScreen extends StatefulWidget {
 
 class _ProductRegistrationScreenState extends State<ProductRegistrationScreen> {
   final TextEditingController nameController = TextEditingController();
-  XFile? image; // Alteração: Armazene a imagem como XFile.
+  XFile? image;
   final TextEditingController valueController = TextEditingController();
   final TextEditingController unitController = TextEditingController();
 
@@ -43,7 +50,7 @@ class _ProductRegistrationScreenState extends State<ProductRegistrationScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 109, 109, 109),
+        backgroundColor: Colors.black,
         title: const Text(
           "Cadastro de Produto",
           style: TextStyle(
@@ -52,7 +59,7 @@ class _ProductRegistrationScreenState extends State<ProductRegistrationScreen> {
           ),
         ),
       ),
-      backgroundColor: Colors.black,
+      backgroundColor: const Color.fromARGB(255, 109, 109, 109),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
@@ -124,42 +131,67 @@ class _ProductRegistrationScreenState extends State<ProductRegistrationScreen> {
                 ],
               ),
               const SizedBox(height: 20),
-              ElevatedButton(
-                style: ButtonStyle(
-                  backgroundColor:
-                      MaterialStatePropertyAll(Colors.red.shade900),
-                ),
-                onPressed: () {
-                  final String name = nameController.text;
-                  final double value =
-                      double.tryParse(valueController.text) ?? 0.0;
-                  final String unit = unitController.text;
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  SizedBox(
+                    height: 50,
+                    child: ElevatedButton(
+                      style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all(Colors.red.shade900),
+                      ),
+                      onPressed: () {
+                        final String name = nameController.text;
+                        final double value =
+                            double.tryParse(valueController.text) ?? 0.0;
+                        final String unit = unitController.text;
 
-                  // Crie uma instância de produto com os valores inseridos
-                  Product product = Product(
-                    name: name,
-                    image: image,
-                    value: value,
-                    unit: unit,
-                  );
+                        // Crie uma instância de produto com os valores inseridos
+                        Product product = Product(
+                          name: name,
+                          image: image,
+                          value: value,
+                          unit: unit,
+                        );
 
-                  // Você pode fazer algo com o objeto 'product' aqui, como salvar em um banco de dados.
+                        // Adicione o novo produto à lista itemList
+                        widget.itemList.add(
+                          ItemModel(
+                            itemName: product.name,
+                            img: product.image?.path ?? "",
+                            price: product.value,
+                            unit: product.unit,
+                          ),
+                        );
 
-                  // Limpe os campos após o cadastro
-                  nameController.clear();
-                  image = null;
-                  valueController.clear();
-                  unitController.clear();
+                        // Chame setState para atualizar o widget ProductGrid
 
-                  // Exiba uma mensagem de sucesso, por exemplo.
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text("Produto cadastrado com sucesso!"),
-                      duration: Duration(seconds: 5),
+                        widget.updateGrid();
+                        setState(() {});
+
+                        // Limpe os campos após o cadastro
+                        nameController.clear();
+                        image = null;
+                        valueController.clear();
+                        unitController.clear();
+
+                        // Exiba uma mensagem de sucesso, por exemplo.
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text("Produto cadastrado com sucesso!"),
+                            duration: Duration(seconds: 5),
+                          ),
+                        );
+                      },
+                      child: const Text(
+                        "Cadastrar Produto",
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
                     ),
-                  );
-                },
-                child: const Text("Cadastrar Produto"),
+                  ),
+                ],
               ),
             ],
           ),

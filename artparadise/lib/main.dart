@@ -14,6 +14,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primaryColor: Colors.black, // Cor de fundo da AppBar
         scaffoldBackgroundColor: const Color.fromARGB(
@@ -24,7 +25,12 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatelessWidget {
+class MyHomePage extends StatefulWidget {
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,19 +47,24 @@ class MyHomePage extends StatelessWidget {
               color: Colors.white,
             ), // Ícone de carrinho
             onPressed: () {
+              // List<Product> selectedProducts =
+              //     selectedItems.map((item) => item.toProduct()).toList();
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) => ShoppingCartScreen(
-                    clients: app_data.clients, // Lista de clientes
-                    products: [], // Lista de produtos
+                    clients: app_data.clients,
+                    products: [],
                     onPlaceOrder:
                         (cartItems, selectedClient, selectedDeliveryDate) {
                       // Lógica para realizar o pedido aqui
-                      // Você pode usar cartItems, selectedClient e selectedDeliveryDate
                     },
                   ),
                 ),
               );
+              // Limpa a lista de itens selecionados
+              // setState(() {
+              //   selectedItems.clear();
+              // });
             },
           ),
         ],
@@ -61,13 +72,22 @@ class MyHomePage extends StatelessWidget {
       ),
       drawer: MyDrawer(),
       body: MyScrollableContent(
-        addToCart: (item, quantity) {},
+        addToCart: (item, quantity) {
+          // setState(() {
+          //   selectedItems.add(item);
+          // });
+        },
       ),
     );
   }
 }
 
-class MyDrawer extends StatelessWidget {
+class MyDrawer extends StatefulWidget {
+  @override
+  State<MyDrawer> createState() => _MyDrawerState();
+}
+
+class _MyDrawerState extends State<MyDrawer> {
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -81,7 +101,12 @@ class MyDrawer extends StatelessWidget {
             onTap: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                    builder: (context) => ProductRegistrationScreen()),
+                    builder: (context) => ProductRegistrationScreen(
+                          itemList: app_data.items,
+                          updateGrid: () {
+                            setState(() {});
+                          },
+                        )),
               );
             },
           ),
@@ -137,6 +162,8 @@ class MyDrawer extends StatelessWidget {
 
 class MyScrollableContent extends StatelessWidget {
   final Function(ItemModel, int) addToCart;
+  final List<ItemModel> cart =
+      []; // Mantenha a definição para aceitar um ItemModel
 
   MyScrollableContent({Key? key, required this.addToCart}) : super(key: key);
 
@@ -164,7 +191,8 @@ class MyScrollableContent extends StatelessWidget {
                 itemBuilder: (_, index) {
                   return ItemTile(
                     item: app_data.items[index],
-                    addToCart: addToCart, // Passar a função addToCart
+                    addToCart:
+                        addToCart, // Mantenha a função addToCart como está
                   );
                 },
               ),

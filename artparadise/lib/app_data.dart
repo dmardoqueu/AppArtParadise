@@ -114,31 +114,31 @@ ItemModel squeeze_aluminio = ItemModel(
 );
 
 Client diogo = Client(
-    name: "Diôgo",
+    name: "Diôgo Mardoqueu Bezerra de Melo",
     city: "Guarabira",
     neighborhood: "Rua honorato araújo filho",
-    address: "nordeste 2",
+    address: "Nordeste 2",
     phone: "83999713261");
 
 Client david = Client(
-    name: "David Bezerra",
+    name: "David Bezerra de Melo",
     city: "Guarabira",
     neighborhood: "Rua honorato araújo filho",
-    address: "nordeste 2",
+    address: "Nordeste 2",
     phone: "8399982455");
 
 Client marinez = Client(
-    name: "Marinez Bezerra",
+    name: "Marinez Bezerra da Silva",
     city: "Guarabira",
     neighborhood: "Rua Amália coelho",
-    address: "centro",
+    address: "Centro",
     phone: "83988537759");
 
 Client adriano = Client(
-    name: "Adriano",
+    name: "Adriano de Melo Pereira",
     city: "Guarabira",
     neighborhood: "Avenida Dom Pedro II",
-    address: "centro",
+    address: "Centro",
     phone: "83988325468");
 
 List<ItemModel> items = [
