@@ -1,3 +1,4 @@
+import 'package:artparadise/cart_item.dart';
 import 'package:artparadise/item_model.dart';
 import 'cliente.dart';
 
@@ -167,7 +168,11 @@ List<Client> clients = [
   marinez,
 ];
 
+List<CartItem> cartItems = [];
 
+void addToCart(CartItem item) {
+  cartItems.add(item);
+}
 
 // List<CartItemModel> cartItems = [
 //   CartItemModel(

@@ -6,7 +6,7 @@ import 'carrinho.dart';
 class ItemTile extends StatelessWidget {
   final ItemModel item;
   final Function(ItemModel, int)
-      addToCart; // Mantenha a definição para aceitar um ItemModel
+      addToCart; // Função para adicionar o item ao carrinho
 
   ItemTile({Key? key, required this.item, required this.addToCart})
       : super(key: key);
@@ -73,17 +73,7 @@ class ItemTile extends StatelessWidget {
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child: const Text(
-                    "Cancelar",
-                    style: TextStyle(
-                      color: Color.fromRGBO(
-                        183,
-                        28,
-                        28,
-                        1,
-                      ),
-                    ),
-                  ),
+                  child: const Text("Cancelar"),
                 ),
               ],
             );

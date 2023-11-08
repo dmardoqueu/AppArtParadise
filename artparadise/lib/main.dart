@@ -1,6 +1,7 @@
 import 'package:artparadise/cadastrar_cliente.dart' as client_registration;
 import 'package:artparadise/cadastrar_produto.dart';
 import 'package:artparadise/carrinho.dart';
+import 'package:artparadise/carrinho_de_compras.dart';
 import 'package:artparadise/gerenciar_pedidos.dart';
 import 'package:artparadise/item_model.dart';
 import 'package:artparadise/resumo_semanal.dart'; // Importe a tela de resumo semanal
@@ -50,16 +51,7 @@ class _MyHomePageState extends State<MyHomePage> {
               // List<Product> selectedProducts =
               //     selectedItems.map((item) => item.toProduct()).toList();
               Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => ShoppingCartScreen(
-                    clients: app_data.clients,
-                    products: [],
-                    onPlaceOrder:
-                        (cartItems, selectedClient, selectedDeliveryDate) {
-                      // Lógica para realizar o pedido aqui
-                    },
-                  ),
-                ),
+                MaterialPageRoute(builder: (context) => CartTab()),
               );
               // Limpa a lista de itens selecionados
               // setState(() {
